@@ -1,0 +1,13 @@
+{
+  "id": "saas-api-access",
+  "name": "SaaS API Access",
+  "scope": ["commercial", "sublicense-allowed", "revocable"],
+  "terms_url": "https://proofmeta.org/templates/saas-api-access",
+  "terms_hash": "sha256:placeholder",
+  "pricing": {
+    "model": "subscription",
+    "amount": "29.00",
+    "currency": "USD",
+    "interval": "month"
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://proofmeta.org/schemas/v1/license-type.json",
+  "title": "ProofMeta License Type",
+  "description": "A reusable license definition. Describes what someone is allowed to do, under what terms, and at what price. Can be applied to any item by any provider.",
+  "type": "object",
+  "required": ["id", "scope", "terms_url", "terms_hash"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Unique identifier for this license type. Use it in manifests and requests."
+    },
+    "name": {
+      "type": "string",
+      "description": "Optional human-readable name."
+    },
+    "scope": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string" },
+      "description": "What the licensee is allowed (and not allowed) to do. At least one core tag required. See scope-vocabulary.md in primitive-core."
+    },
+    "terms_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL to the full human-readable license text."
+    },
+    "terms_hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$",
+      "description": "SHA-256 hash of the terms document. Proves the terms haven't changed since the license was agreed."
+    },
+    "pricing": {
+      "description": "Optional. How much it costs. Omit for ask-to-price or negotiated licenses.",
+      "type": "object",
+      "required": ["model"],
+      "properties": {
+        "model": {
+          "type": "string",
+          "enum": ["free", "one-time", "subscription", "usage-based"],
+          "description": "free = no cost. one-time = pay once. subscription = recurring. usage-based = pay per use."
+        },
+        "amount": {
+          "type": "string",
+          "description": "Price as string to avoid floating point issues. e.g. '5.00'"
+        },
+        "currency": {
+          "type": "string",
+          "description": "ISO 4217 currency code or crypto ticker. e.g. 'USD', 'EUR', 'USDC'"
+        },
+        "interval": {
+          "type": "string",
+          "enum": ["day", "week", "month", "year"],
+          "description": "Only for subscription model."
+        },
+        "unit": {
+          "type": "string",
+          "description": "Only for usage-based model. What counts as one use. e.g. 'request', 'minute', 'token'"
+        }
+      }
+    }
+  }
+}

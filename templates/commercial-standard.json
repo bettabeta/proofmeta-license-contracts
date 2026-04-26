@@ -1,0 +1,12 @@
+{
+  "id": "commercial-standard",
+  "name": "Commercial Standard",
+  "scope": ["commercial", "derivative-allowed", "ai-training-excluded"],
+  "terms_url": "https://proofmeta.org/templates/commercial-standard",
+  "terms_hash": "sha256:placeholder",
+  "pricing": {
+    "model": "one-time",
+    "amount": "5.00",
+    "currency": "USD"
+  }
+}

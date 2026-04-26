@@ -1,0 +1,13 @@
+{
+  "id": "ai-training-dataset",
+  "name": "AI Training Dataset License",
+  "scope": ["commercial", "ai-training-allowed", "attribution-required"],
+  "terms_url": "https://proofmeta.org/templates/ai-training-dataset",
+  "terms_hash": "sha256:placeholder",
+  "pricing": {
+    "model": "usage-based",
+    "amount": "0.01",
+    "currency": "USD",
+    "unit": "record"
+  }
+}

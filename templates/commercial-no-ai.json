@@ -1,0 +1,12 @@
+{
+  "id": "commercial-no-ai",
+  "name": "Commercial — No AI Training",
+  "scope": ["commercial", "attribution-required", "ai-training-excluded"],
+  "terms_url": "https://proofmeta.org/templates/commercial-no-ai",
+  "terms_hash": "sha256:placeholder",
+  "pricing": {
+    "model": "one-time",
+    "amount": "10.00",
+    "currency": "USD"
+  }
+}

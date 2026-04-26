@@ -1,0 +1,10 @@
+{
+  "id": "free-attribution",
+  "name": "Free with Attribution",
+  "scope": ["non-commercial", "derivative-allowed", "attribution-required"],
+  "terms_url": "https://proofmeta.org/templates/free-attribution",
+  "terms_hash": "sha256:placeholder",
+  "pricing": {
+    "model": "free"
+  }
+}

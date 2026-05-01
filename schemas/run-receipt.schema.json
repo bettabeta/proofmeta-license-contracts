@@ -1,0 +1,143 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://proofmeta.org/schemas/v1/run-receipt.json",
+  "title": "ProofMeta Run Receipt",
+  "description": "Verifiable evidence that a licensed skill execution happened under a specific version, constraints set, and payment reference.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "receipt_version",
+    "receipt_id",
+    "timestamp",
+    "skill",
+    "license",
+    "consumer",
+    "request",
+    "execution",
+    "result",
+    "payment",
+    "signatures"
+  ],
+  "properties": {
+    "receipt_version": { "type": "string", "const": "1.0" },
+    "receipt_id": { "type": "string", "minLength": 1 },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "skill": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["skill_id", "skill_version", "provider_did", "container_digest", "execution_profile_id"],
+      "properties": {
+        "skill_id": { "type": "string", "minLength": 1 },
+        "skill_version": { "type": "string", "minLength": 1 },
+        "provider_did": { "type": "string", "minLength": 1 },
+        "container_digest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        "execution_profile_id": { "type": "string", "minLength": 1 }
+      }
+    },
+    "license": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["license_id", "license_envelope_id", "constraints_hash", "valid_at_execution"],
+      "properties": {
+        "license_id": { "type": "string", "minLength": 1 },
+        "license_envelope_id": { "type": "string", "minLength": 1 },
+        "constraints_hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        "valid_at_execution": { "type": "boolean" }
+      }
+    },
+    "consumer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["consumer_agent_id", "buyer_wallet", "session_id"],
+      "properties": {
+        "consumer_agent_id": { "type": "string", "minLength": 1 },
+        "buyer_wallet": { "type": "string", "minLength": 1 },
+        "session_id": { "type": "string", "minLength": 1 }
+      }
+    },
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["request_id", "input_hash", "input_canonicalization", "input_size_bytes"],
+      "properties": {
+        "request_id": { "type": "string", "minLength": 1 },
+        "input_hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        "input_canonicalization": { "type": "string", "enum": ["jcs"] },
+        "input_size_bytes": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "started_at",
+        "finished_at",
+        "duration_ms",
+        "deterministic_mode",
+        "status",
+        "policy_checks"
+      ],
+      "properties": {
+        "started_at": { "type": "string", "format": "date-time" },
+        "finished_at": { "type": "string", "format": "date-time" },
+        "duration_ms": { "type": "integer", "minimum": 0 },
+        "deterministic_mode": { "type": "boolean" },
+        "deterministic_seed": { "type": ["string", "null"] },
+        "status": { "type": "string", "enum": ["SUCCEEDED", "FAILED", "DENIED"] },
+        "policy_checks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "result"],
+            "properties": {
+              "name": { "type": "string", "minLength": 1 },
+              "result": { "type": "string", "enum": ["PASS", "FAIL"] }
+            }
+          }
+        }
+      }
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["output_hash", "output_size_bytes"],
+      "properties": {
+        "output_hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        "output_size_bytes": { "type": "integer", "minimum": 0 },
+        "error_code": { "type": ["string", "null"] }
+      }
+    },
+    "payment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rail", "pricing_model", "amount", "currency", "payment_reference", "payment_verified"],
+      "properties": {
+        "rail": { "type": "string", "enum": ["solana", "x402", "stripe", "coinbase", "other"] },
+        "pricing_model": { "type": "string", "enum": ["per_run", "one_time", "subscription", "usage_based"] },
+        "amount": { "type": "string", "minLength": 1 },
+        "currency": { "type": "string", "minLength": 1 },
+        "payment_reference": { "type": "string", "minLength": 1 },
+        "payment_verified": { "type": "boolean" }
+      }
+    },
+    "usage": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["run_index_for_license", "remaining_runs_after_execution"],
+      "properties": {
+        "run_index_for_license": { "type": "integer", "minimum": 1 },
+        "remaining_runs_after_execution": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "signatures": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider_signature", "gateway_signature"],
+      "properties": {
+        "provider_signature": { "type": "string", "minLength": 1 },
+        "gateway_signature": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

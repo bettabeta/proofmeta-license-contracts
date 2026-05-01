@@ -1,0 +1,88 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://proofmeta.org/schemas/v1/rating.json",
+  "title": "ProofMeta Verified Rating",
+  "description": "Post-consumption rating bound to a verified execution receipt. Supports version-level and creator-level reputation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "rating_version",
+    "rating_id",
+    "timestamp",
+    "receipt_ref",
+    "rater",
+    "target",
+    "scores",
+    "verification",
+    "signature"
+  ],
+  "properties": {
+    "rating_version": { "type": "string", "const": "1.0" },
+    "rating_id": { "type": "string", "minLength": 1 },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "receipt_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["receipt_id", "request_id"],
+      "properties": {
+        "receipt_id": { "type": "string", "minLength": 1 },
+        "request_id": { "type": "string", "minLength": 1 }
+      }
+    },
+    "rater": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["consumer_agent_id", "buyer_wallet"],
+      "properties": {
+        "consumer_agent_id": { "type": "string", "minLength": 1 },
+        "buyer_wallet": { "type": "string", "minLength": 1 }
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["skill_id", "skill_version", "provider_did"],
+      "properties": {
+        "skill_id": { "type": "string", "minLength": 1 },
+        "skill_version": { "type": "string", "minLength": 1 },
+        "provider_did": { "type": "string", "minLength": 1 }
+      }
+    },
+    "scores": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["overall", "quality", "latency", "value_for_price", "license_clarity"],
+      "properties": {
+        "overall": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "quality": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "latency": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "value_for_price": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "license_clarity": { "type": "integer", "minimum": 1, "maximum": 5 }
+      }
+    },
+    "feedback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["would_reuse"],
+      "properties": {
+        "title": { "type": ["string", "null"], "maxLength": 120 },
+        "comment": { "type": ["string", "null"], "maxLength": 5000 },
+        "would_reuse": { "type": "boolean" },
+        "flags": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["verified_purchase", "verified_execution"],
+      "properties": {
+        "verified_purchase": { "type": "boolean" },
+        "verified_execution": { "type": "boolean" }
+      }
+    },
+    "signature": { "type": "string", "minLength": 1 }
+  }
+}

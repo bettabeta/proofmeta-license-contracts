@@ -102,9 +102,19 @@ Defined in [primitive-core/docs/scope-vocabulary.md](https://github.com/bettabet
 
 Need something custom? Use a URL: `"https://youragent.ai/scope/eu-only"`
 
-## Schema
+## Schemas
 
-→ [`schemas/license-type.schema.json`](schemas/license-type.schema.json)
+- [`schemas/license-type.schema.json`](schemas/license-type.schema.json) — canonical license type
+- [`schemas/run-receipt.schema.json`](schemas/run-receipt.schema.json) — deterministic execution proof receipt
+- [`schemas/rating.schema.json`](schemas/rating.schema.json) — verified post-consumption rating linked to a receipt
+
+### Why run receipts + ratings are in license-contracts
+
+They define chain-agnostic evidence semantics for licensed execution and trust feedback:
+- What must be proven after a paid run (version, input/output hash, constraints, payment reference, signatures)
+- How consumers can submit verifiable ratings tied to actual execution
+
+Execution repos (Solana/x402/Stripe/etc.) implement these contracts, but the contracts themselves stay portable here.
 
 ## License
 

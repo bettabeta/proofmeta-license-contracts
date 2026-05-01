@@ -1,0 +1,88 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://proofmeta.org/schemas/v1/purchase-intent.json",
+  "title": "ProofMeta Purchase Intent",
+  "description": "Signed, short-lived quote binding license terms and price before payment. Payment providers execute against this intent to prevent term/price drift.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "intent_version",
+    "intent_id",
+    "issued_at",
+    "expires_at",
+    "skill",
+    "license",
+    "buyer",
+    "price",
+    "payment_requirements",
+    "provider_signature"
+  ],
+  "properties": {
+    "intent_version": { "type": "string", "const": "1.0" },
+    "intent_id": { "type": "string", "minLength": 1 },
+    "issued_at": { "type": "string", "format": "date-time" },
+    "expires_at": { "type": "string", "format": "date-time" },
+    "skill": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["skill_id", "skill_version", "provider_did"],
+      "properties": {
+        "skill_id": { "type": "string", "minLength": 1 },
+        "skill_version": { "type": "string", "minLength": 1 },
+        "provider_did": { "type": "string", "minLength": 1 }
+      }
+    },
+    "license": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["license_id", "license_hash", "constraints_hash"],
+      "properties": {
+        "license_id": { "type": "string", "minLength": 1 },
+        "license_hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        "constraints_hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+      }
+    },
+    "buyer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["consumer_agent_id", "buyer_wallet"],
+      "properties": {
+        "consumer_agent_id": { "type": "string", "minLength": 1 },
+        "buyer_wallet": { "type": "string", "minLength": 1 }
+      }
+    },
+    "price": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["amount", "currency", "pricing_model"],
+      "properties": {
+        "amount": { "type": "string", "minLength": 1 },
+        "currency": { "type": "string", "minLength": 1 },
+        "pricing_model": {
+          "type": "string",
+          "enum": ["per_run", "one_time", "subscription", "usage_based"]
+        }
+      }
+    },
+    "payment_requirements": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["accepted_rails", "payment_reference_type"],
+      "properties": {
+        "accepted_rails": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "enum": ["solana", "x402", "stripe", "coinbase", "other"]
+          }
+        },
+        "payment_reference_type": {
+          "type": "string",
+          "enum": ["tx_hash", "intent_payment_id", "checkout_session_id", "invoice_id", "other"]
+        }
+      }
+    },
+    "provider_signature": { "type": "string", "minLength": 1 }
+  }
+}

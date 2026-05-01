@@ -105,12 +105,14 @@ Need something custom? Use a URL: `"https://youragent.ai/scope/eu-only"`
 ## Schemas
 
 - [`schemas/license-type.schema.json`](schemas/license-type.schema.json) — canonical license type
+- [`schemas/purchase-intent.schema.json`](schemas/purchase-intent.schema.json) — signed pre-payment quote that binds terms + price
 - [`schemas/run-receipt.schema.json`](schemas/run-receipt.schema.json) — deterministic execution proof receipt
 - [`schemas/rating.schema.json`](schemas/rating.schema.json) — verified post-consumption rating linked to a receipt
 
-### Why run receipts + ratings are in license-contracts
+### Why purchase intents + run receipts + ratings are in license-contracts
 
-They define chain-agnostic evidence semantics for licensed execution and trust feedback:
+They define chain-agnostic contract semantics for payment + execution + trust feedback:
+- What must be locked before payment (intent: license/constraints/price/expiry)
 - What must be proven after a paid run (version, input/output hash, constraints, payment reference, signatures)
 - How consumers can submit verifiable ratings tied to actual execution
 
